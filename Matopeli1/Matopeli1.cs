@@ -51,13 +51,14 @@ public class Matopeli1 : PhysicsGame
 
     private void PelinAlku()
     {
-        suunta = Direction.Up; tulevaSuunta = Direction.Up;
+        suunta = Direction.Up; 
+        tulevaSuunta = Direction.Up;
         foreach(GameObject madonPala in matopalat) {
             Remove(madonPala);
         }
         matopalat.Clear();
 
-        // Luodaan mato-kavereita xd
+        // Luodaan mato-kavereita
         LuoMatopala(6 * Ruudut, 3 * Ruudut);
         LuoMatopala(5 * Ruudut, 3 * Ruudut);
         LuoMatopala(4 * Ruudut, 3 * Ruudut);
@@ -82,13 +83,13 @@ public class Matopeli1 : PhysicsGame
         Level.CreateBorders();
 
 
-        // Luodaan punainen omena.
+        // Luodaan punainen neliö-omena.
         omena = new GameObject(Ruudut, Ruudut);
         omena.Color = Color.Red;
         Add(omena);
 
 
-        // Luodaan ajastin, joka kutsuu PaivitaMatoa aliohjelmaa 0.1 sekunnin välein.
+        // Luodaan ajastin 0.1s
         Timer paivitysAjastin = new Timer();
         paivitysAjastin.Interval = 0.1;
         paivitysAjastin.Timeout += PaivitaMatoa;
@@ -163,34 +164,34 @@ public class Matopeli1 : PhysicsGame
     void PaivitaMatoa()
     {
         suunta = tulevaSuunta;
-        GameObject paa = matopalat[0]; // Uudeksi pääksi tulee nykyinen häntä.
-        GameObject vanhaPaa = matopalat[matopalat.Count - 1]; // Edeltävä pää on listan lopussa.
+        GameObject paa = matopalat[0]; // Uusi pää on nykyinen häntä
+        GameObject vanhaPaa = matopalat[matopalat.Count - 1]; // Edeltävä pää on listan loppuun
 
         // Liikutetaan uusi pää kohtaan, joka on vanhasta päästä RuudunKoon verran siihen
         // suuntaan, johon ollaan menossa.
         paa.Position = vanhaPaa.Position + suunta.GetVector() * Ruudut;
 
-        matopalat.RemoveAt(0); // Poistetaan listan ensimmäinen alkio, eli viimeinen pala häntää.
-        matopalat.Add(paa); // Liikutetaan se listan loppuun.
+        matopalat.RemoveAt(0); // Poistetaan listan ensimmäinen alkio
+        matopalat.Add(paa); // Alkio listan loppuun
 
-        // Peli päättyy jos pää törmää muihin paloihin.
+        // Peli päättyy jos osutaan omiin paloihin
         for (int i = 0; i < matopalat.Count - 1; i++)
         {
             if (matopalat[i].IsInside(paa.Position))
             {
-                PelinAlku(); // Aloittaa pelin alusta.
-                return; // PaivitaMatoa aliohjelma päättyy tähän.
+                PelinAlku(); // Restart
+                return; // PaivitaMatoa aliohjelma päättyy
             }
         }
 
-        // Jos pää menee kentän ulkopuolelle, niin peli alkaa alusta.
+        // Jos menee ulos kartasta, niin peli päättyy
         if (!Level.BoundingRect.IsInside(paa.Position))
         {
             PelinAlku();
             return;
         }
 
-        // Tarkistetaan törmäsikö pää omenaan.
+        // törmäsikö pää omenaan
         if (omena.IsInside(paa.Position))
         {
             // Siirretään omena satunnaiseen paikkaan.
@@ -210,7 +211,7 @@ public class Matopeli1 : PhysicsGame
             pala.X = x;
             pala.Y = y;
             matopalat.Insert(0, pala); // Lisää palan matopalat listan alkuun.
-            Add(pala); // Lisää palan myös pelikentälle.
+            Add(pala); // Lisää pala pelikentälle.
         }
     
 
