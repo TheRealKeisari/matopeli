@@ -100,26 +100,6 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    private void LuoReuna(Vector sijainti, double leveys, double korkeus)
-    {
-        PhysicsObject reuna = PhysicsObject.CreateStaticObject(leveys, korkeus);
-        reuna.Color = Color.AshGray;
-        reuna.Position = sijainti;
-
-        Add(reuna);
-    }
-
-
-    private void LuoMato(Vector sijainti, double leveys, double korkeus)
-    {
-        PhysicsObject mato = new PhysicsObject(leveys, korkeus);
-        mato.Position = sijainti;
-        mato.Color = Color.White;
-        Add(mato);
-
-    }
-
-
      void MuutaSuunta(Direction uusiSuunta)
     {
         if (suunta == Direction.Right && uusiSuunta != Direction.Left)
@@ -136,24 +116,10 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    private void MadonNopeus()
-    {
-
-    }
-
-
-    private void Omenat()
-    {
-        omena = new GameObject(Ruudut, Ruudut);
-        omena.Color = Color.Red;
-        Add(omena);
-    }
-
     private void LisaaLaskurit()
     {
         pelaajan1Pisteet = LuoLaskuri(Screen.Left + 100.0, Screen.Top - 100.0);
         IntMeter pelaajan2Pisteet = LuoLaskuri(Screen.Right - 100.0, Screen.Top - 100.0);
-
     }
 
 
