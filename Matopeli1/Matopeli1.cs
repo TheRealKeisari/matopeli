@@ -173,12 +173,9 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    private void OmenanSyonti1(PhysicsObject mato1, GameObject omena)
+    private void PisteenLisays()
     {
-        if (mato1 == omena)
-        {
-            pelaajan1Pisteet.Value += 1;
-        }
+        pelaajan1Pisteet.Value += 1;
     }
 
 
@@ -221,6 +218,7 @@ public class Matopeli1 : PhysicsGame
             omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
 
             // Luodaan uusi madon pala.
+            PisteenLisays();
             LuoMatopala(matopalat[0].Position.X, matopalat[1].Position.Y);
         }
     }
