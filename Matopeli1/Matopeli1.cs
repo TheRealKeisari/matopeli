@@ -16,7 +16,6 @@ public class Matopeli1 : PhysicsGame
     private const int Korkeus = 31;
     private const int MadonPituus = 3;
     private const int r = 7;
-    private int omenanSyonti = 0;
 
     // Määritetään aloitukseen suunta
     Direction suunta;
@@ -39,7 +38,7 @@ public class Matopeli1 : PhysicsGame
     private PhysicsObject oikeaReuna;
     private PhysicsObject alaReuna;
     private PhysicsObject ylaReuna;
-
+    private IntMeter pelaajan1Pisteet;
 
     public override void Begin()
     {
@@ -96,6 +95,7 @@ public class Matopeli1 : PhysicsGame
         paivitysAjastin.Start();
 
         AsetaOhjaimet();
+        LisaaLaskurit();
     }
 
 
@@ -148,16 +148,37 @@ public class Matopeli1 : PhysicsGame
         Add(omena);
     }
 
-
-    private void LuoLaskuri()
+    private void LisaaLaskurit()
     {
+        pelaajan1Pisteet = LuoLaskuri(Screen.Left + 100.0, Screen.Top - 100.0);
+        IntMeter pelaajan2Pisteet = LuoLaskuri(Screen.Right - 100.0, Screen.Top - 100.0);
 
     }
 
 
-    private void KasitteleTormays()
+    private IntMeter LuoLaskuri(double x, double y)
     {
+        IntMeter laskuri = new IntMeter(0);
 
+        Label naytto = new Label();
+        naytto.BindTo(laskuri);
+        naytto.X = x;
+        naytto.Y = y;
+        naytto.TextColor = Color.Black;
+        naytto.BorderColor = Level.Background.Color;
+        naytto.Color = Level.Background.Color;
+        Add(naytto);
+
+        return laskuri;
+    }
+
+
+    private void OmenanSyonti1(PhysicsObject mato1, GameObject omena)
+    {
+        if (mato1 == omena)
+        {
+            pelaajan1Pisteet.Value += 1;
+        }
     }
 
 
