@@ -52,7 +52,8 @@ public class Matopeli1 : PhysicsGame
     {
         suunta = Direction.Up; 
         tulevaSuunta = Direction.Up;
-        foreach(GameObject madonPala in matopalat) {
+        pelaajan1Pisteet.Value = 0;
+        foreach (GameObject madonPala in matopalat) {
             Remove(madonPala);
         }
         matopalat.Clear();
