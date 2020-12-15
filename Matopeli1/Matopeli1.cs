@@ -210,20 +210,6 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    /// <summary>
-    /// käsitellään pisteiden lisäys TODO: yhteen aliohjelmaan
-    /// </summary>
-    private void PisteenLisays1()
-    {
-        pelaajan1Pisteet.Value += 1;
-    }
-
-
-    private void PisteenLisays2()
-    {
-        pelaajan2Pisteet.Value += 1;
-    }
-
 
     /// <summary>
     /// Tämän aliohjelman sisällä käsittelemme sitä, kuinka mato käyttäytyy pelissä
@@ -307,7 +293,7 @@ public class Matopeli1 : PhysicsGame
             omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
 
             /// Luodaan uusi madon pala.
-            PisteenLisays1();
+            pelaajan1Pisteet.Value += 1;
             LuoMatopala1(matopalat1[0].Position.X, matopalat1[1].Position.Y);
         }
 
@@ -319,7 +305,7 @@ public class Matopeli1 : PhysicsGame
             omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
 
             /// Luodaan uusi madon pala.
-            PisteenLisays2();
+            pelaajan2Pisteet.Value += 1;
             LuoMatopala2(matopalat2[0].Position.X, matopalat2[1].Position.Y);
 
         }
