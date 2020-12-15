@@ -5,19 +5,28 @@ using Jypeli.Assets;
 using Jypeli.Controls;
 using Jypeli.Widgets;
 
+/// <summary>
+/// @author Juuso Jokinen
+/// @author Oskari Neuvonen
+/// Version 15.12.2020
+/// Kahden pelaajan matopeli, jossa tarkoituksena kilpailla toisen pelaajan kanssa
+/// </summary>
 public class Matopeli1 : PhysicsGame
-
 {
-    // Suunnitelmana olisi kirjoittaa matopeli, jossa teemme kaksi matoa joita ohjataan yhdellä näppäimistöllä käyttäen nuolinäppäimiä sekä WASD:ia
-    // Aloitetaan tekemällä pelikartalle rajat ja jakamalla se neliöihin
-    // "const int" käsitteiden tarkoituksena määrittää pelikartta, kartan koko sekä madon pituus ja aloituspaikka pelin alussa. Author ja pelin luokka
+    /// <summary>
+    /// Suunnitelmana olisi kirjoittaa matopeli, jossa teemme kaksi matoa joita ohjataan yhdellä näppäimistöllä käyttäen nuolinäppäimiä sekä WASD:ia
+    /// Aloitetaan tekemällä pelikartalle rajat ja jakamalla se neliöihin
+    /// "const int" käsitteiden tarkoituksena määrittää pelikartta, kartan koko sekä madon pituus ja aloituspaikka pelin alussa. TODO: Author, Pelin versio ja pelin luokka
+    /// </summary>
 
     private const int Ruudut = 20;
     private const int Leveys = 31;
     private const int Korkeus = 31;
 
 
-    // Määritetään aloitukseen suunta
+    /// <summary>
+    /// Määritetään aloituksen suunta
+    /// </summary>
     private Direction suunta1;
     private Direction suunta2;
     private Direction tulevaSuunta1;
@@ -25,13 +34,17 @@ public class Matopeli1 : PhysicsGame
 
     private GameObject omena;
 
-    // Lisätään pelille uusi objekti "omena", jota madolla kerätään kasvattaaksemme matoa 
 
+    /// <summary>
+    /// Lisätään pelille uusi objekti "omena", jota madolla kerätään kasvattaaksemme matoa
+    /// </summary>
     List<GameObject> matopalat1 = new List<GameObject>();
     List<GameObject> matopalat2 = new List<GameObject>();
 
-    // Annetaan pelille uudet käsitteet "laskurit" ja nimetään ne 
 
+    /// <summary>
+    /// Annetaan pelille uudet käsitteet "laskurit" ja nimetään ne 
+    /// </summary>
     private IntMeter pelaajan1Pisteet;
     private IntMeter pelaajan2Pisteet;
 
@@ -43,7 +56,9 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään pelin aloitustilanne
+    /// <summary>
+    /// Käsitellään pelin aloitustilanne
+    /// </summary>
     private void PelinAlku()
     {
         suunta1 = Direction.Up; 
@@ -63,13 +78,13 @@ public class Matopeli1 : PhysicsGame
         }
         matopalat2.Clear();
 
-        // Luodaan mato-kavereita
+        /// Luodaan mato-kavereita
         LuoMatopala1(6 * Ruudut, 3 * Ruudut);
         LuoMatopala1(5 * Ruudut, 3 * Ruudut);
         LuoMatopala1(4 * Ruudut, 3 * Ruudut);
         LuoMatopala1(3 * Ruudut, 3 * Ruudut);
 
-        // Luodaan mato-kavereita
+        
         LuoMatopala2(6 * Ruudut, 1 * Ruudut);
         LuoMatopala2(5 * Ruudut, 1 * Ruudut);
         LuoMatopala2(4 * Ruudut, 1 * Ruudut);
@@ -77,7 +92,9 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Asetetaan ohjaimet pelaajille
+    /// <summary>
+    /// Asetetaan ohjaimet pelaajille
+    /// </summary>
     private void AsetaOhjaimet()
     {
 
@@ -97,7 +114,9 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Luodaan pelikenttä
+    /// <summary>
+    /// Luodaan pelikenttä
+    /// </summary>
     private void LuoKentta()
     {
         Level.Width = Ruudut * Leveys;
@@ -105,13 +124,13 @@ public class Matopeli1 : PhysicsGame
         Level.CreateBorders();
 
 
-        // Luodaan punainen neliö-omena.
+        /// Luodaan punainen neliö-omena.
         omena = new GameObject(Ruudut, Ruudut);
         omena.Color = Color.Red;
         Add(omena);
 
 
-        // Luodaan ajastin 0.1s
+        /// Luodaan ajastin 0.1s
         Timer paivitysAjastin = new Timer();
         paivitysAjastin.Interval = 0.1;
         paivitysAjastin.Timeout += PaivitaMatoa;
@@ -122,8 +141,11 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään matojen suunnanmuutokset - uusiSuunta yhteen aliohjelmaan (parametrin lisäys)
-     void MuutaSuunta(Direction uusiSuunta)
+    /// <summary>
+    /// Käsitellään matojen suunnanmuutokset TODO: uusiSuunta yhteen aliohjelmaan (parametrin lisäys)
+    /// </summary>
+    /// <param name="uusiSuunta"></param>
+    void MuutaSuunta(Direction uusiSuunta)
     {
         if (suunta1 == Direction.Right && uusiSuunta != Direction.Left)
             tulevaSuunta1 = uusiSuunta;
@@ -155,7 +177,9 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Lisätään luomamme laskurit peliin
+    /// <summary>
+    /// Lisätään luomamme laskurit peliin ja sijoitetaan ne sopiviin kohtiin pelikarttaa
+    /// </summary>
     private void LisaaLaskurit()
     {
         pelaajan1Pisteet = LuoLaskuri(Screen.Left + 100.0, Screen.Top - 100.0);
@@ -163,7 +187,12 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Luodaan pistelaskurit, jolloin tiedämme kumpi mato on kerännyt useamman omenan
+    /// <summary>
+    /// Luodaan pistelaskurit, jolloin tiedämme kumpi mato on kerännyt useamman omenan
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns laskuri></returns>
     private IntMeter LuoLaskuri(double x, double y)
     {
         IntMeter laskuri = new IntMeter(0);
@@ -181,7 +210,9 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään pisteiden lisäys laskureihin (pisteenlisäys yhteen aliohjelmaan)
+    /// <summary>
+    /// käsitellään pisteiden lisäys TODO: yhteen aliohjelmaan
+    /// </summary>
     private void PisteenLisays1()
     {
         pelaajan1Pisteet.Value += 1;
@@ -194,66 +225,72 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Tämän aliohjelman sisällä käsittelemme sitä, kuinka mato käyttäytyy pelissä
+    /// <summary>
+    /// Tämän aliohjelman sisällä käsittelemme sitä, kuinka mato käyttäytyy pelissä
+    /// </summary>
     void PaivitaMatoa()
     {
         suunta1 = tulevaSuunta1;
-        GameObject paa1 = matopalat1[0]; // Uusi pää on nykyinen häntä
-        GameObject vanhaPaa1 = matopalat1[matopalat1.Count - 1]; // Edeltävä pää on listan loppuun
+        GameObject paa1 = matopalat1[0]; /// Uusi pää on nykyinen häntä
+        GameObject vanhaPaa1 = matopalat1[matopalat1.Count - 1]; /// Edeltävä pää on listan loppuun
 
         suunta2 = tulevaSuunta2;
-        GameObject paa2 = matopalat2[0]; // Uusi pää on nykyinen häntä
-        GameObject vanhaPaa2 = matopalat2[matopalat2.Count - 1]; // Edeltävä pää on listan loppuun
+        GameObject paa2 = matopalat2[0]; /// Uusi pää on nykyinen häntä
+        GameObject vanhaPaa2 = matopalat2[matopalat2.Count - 1]; /// Edeltävä pää on listan loppuun
 
-        // Liikutetaan uusi pää kohtaan, joka on vanhasta päästä RuudunKoon verran siihen
-        // suuntaan, johon ollaan menossa.
+        /// Liikutetaan uusi pää kohtaan, joka on vanhasta päästä RuudunKoon verran siihen
+        /// suuntaan, johon ollaan menossa.
         paa1.Position = vanhaPaa1.Position + suunta1.GetVector() * Ruudut;
         paa2.Position = vanhaPaa2.Position + suunta2.GetVector() * Ruudut;
 
-        matopalat1.RemoveAt(0); // Poistetaan listan ensimmäinen alkio
-        matopalat1.Add(paa1); // Alkio listan loppuun
-        matopalat2.RemoveAt(0); // Poistetaan listan ensimmäinen alkio
-        matopalat2.Add(paa2); // Alkio listan loppuun
+        matopalat1.RemoveAt(0); /// Poistetaan listan ensimmäinen alkio
+        matopalat1.Add(paa1); /// Alkio listan loppuun
+
+        matopalat2.RemoveAt(0); /// Poistetaan listan ensimmäinen alkio
+        matopalat2.Add(paa2); /// Alkio listan loppuun
 
 
-        // Peli päättyy jos osutaan omiin paloihin (toistoa)
+        /// Peli päättyy jos osutaan omiin paloihin (toistoa)
         for (int i = 0; i < matopalat1.Count - 1; i++)
         {
             if (matopalat1[i].IsInside(paa1.Position))
             {
-                PelinAlku(); // Restart
-                return; // PaivitaMatoa aliohjelma päättyy
+                PelinAlku(); /// Restart
+                return; /// PaivitaMatoa aliohjelma päättyy
             }
+
             if (matopalat1[i].IsInside(paa2.Position))
             {
-                PelinAlku(); // Restart
-                return; // PaivitaMatoa aliohjelma päättyy
+                PelinAlku(); /// Restart
+                return; /// PaivitaMatoa aliohjelma päättyy
             }
         }
 
-        
-        // Peli päättyy jos osutaan omiin paloihin
+
+        /// Peli päättyy jos osutaan omiin paloihin
         for (int i = 0; i < matopalat2.Count - 1; i++)
         {
             if (matopalat2[i].IsInside(paa2.Position))
             {
-                PelinAlku(); // Restart
-                return; // PaivitaMatoa aliohjelma päättyy
+                PelinAlku(); /// Restart
+                return; /// PaivitaMatoa aliohjelma päättyy
             }
+
             if (matopalat2[i].IsInside(paa1.Position))
             {
-                PelinAlku(); // Restart
-                return; // PaivitaMatoa aliohjelma päättyy
+                PelinAlku(); /// Restart
+                return; /// PaivitaMatoa aliohjelma päättyy
             }
         }
 
 
-        // Jos menee ulos kartasta, niin peli päättyy (toistoa)
+        /// Jos menee ulos kartasta, niin peli päättyy (toistoa)
         if (!Level.BoundingRect.IsInside(paa1.Position))
         {
             PelinAlku();
             return;
         }
+
         if (!Level.BoundingRect.IsInside(paa2.Position))
         {
             PelinAlku();
@@ -261,27 +298,27 @@ public class Matopeli1 : PhysicsGame
         }
 
 
-            // törmäsikö pää omenaan
+        /// törmäsikö pää omenaan
         if (omena.IsInside(paa1.Position))
         {
-            // Siirretään omena satunnaiseen paikkaan.
+            /// Siirretään omena satunnaiseen paikkaan.
             double satunnainenX = RandomGen.NextInt(-Leveys / 2, Leveys / 2);
             double satunnainenY = RandomGen.NextInt(-Korkeus / 2, Korkeus / 2);
             omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
 
-            // Luodaan uusi madon pala.
+            /// Luodaan uusi madon pala.
             PisteenLisays1();
             LuoMatopala1(matopalat1[0].Position.X, matopalat1[1].Position.Y);
         }
 
         if (omena.IsInside(paa2.Position))
         {
-            // Siirretään omena satunnaiseen paikkaan.
+            /// Siirretään omena satunnaiseen paikkaan.
             double satunnainenX = RandomGen.NextInt(-Leveys / 2, Leveys / 2);
             double satunnainenY = RandomGen.NextInt(-Korkeus / 2, Korkeus / 2);
             omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
 
-            // Luodaan uusi madon pala.
+            /// Luodaan uusi madon pala.
             PisteenLisays2();
             LuoMatopala2(matopalat2[0].Position.X, matopalat2[1].Position.Y);
 
@@ -290,14 +327,14 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään uuden palan lisäys madon jatkeeksi (toisto)
+    /// Käsitellään uuden palan lisäys madon jatkeeksi (toisto)
     void LuoMatopala1(double x, double y)
     {
         GameObject pala = new GameObject(Ruudut, Ruudut);
         pala.X = x;
         pala.Y = y;
-        matopalat1.Insert(0, pala); // Lisää palan matopalat listan alkuun.
-        Add(pala); // Lisää pala pelikentälle.
+        matopalat1.Insert(0, pala); /// Lisää palan matopalat listan alkuun.
+        Add(pala); /// Lisää pala pelikentälle.
     }
 
 
@@ -306,8 +343,8 @@ public class Matopeli1 : PhysicsGame
         GameObject pala = new GameObject(Ruudut, Ruudut);
         pala.X = x;
         pala.Y = y;
-        matopalat2.Insert(0, pala); // Lisää palan matopalat listan alkuun.
-        Add(pala); // Lisää pala pelikentälle.
+        matopalat2.Insert(0, pala); /// Lisää palan matopalat listan alkuun.
+        Add(pala); /// Lisää pala pelikentälle.
     }
 
 
