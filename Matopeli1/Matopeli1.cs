@@ -16,7 +16,7 @@ public class Matopeli1 : PhysicsGame
     /// <summary>
     /// Suunnitelmana olisi kirjoittaa matopeli, jossa teemme kaksi matoa joita ohjataan yhdellä näppäimistöllä käyttäen nuolinäppäimiä sekä WASD:ia
     /// Aloitetaan tekemällä pelikartalle rajat ja jakamalla se neliöihin
-    /// "const int" käsitteiden tarkoituksena määrittää pelikartta, kartan koko sekä madon pituus ja aloituspaikka pelin alussa. TODO: Author, Pelin versio ja pelin luokka
+    /// "const int" käsitteiden tarkoituksena määrittää pelikartta, kartan koko sekä madon pituus ja aloituspaikka pelin alussa. 
     /// </summary>
 
     private const int Ruudut = 20;
@@ -32,11 +32,15 @@ public class Matopeli1 : PhysicsGame
     private Direction tulevaSuunta1;
     private Direction tulevaSuunta2;
 
+
+    /// <summary>
+    /// Lisätään pelille uusi objekti "omena", jota madolla kerätään kasvattaaksemme matoa
+    /// </summary>
     private GameObject omena;
 
 
     /// <summary>
-    /// Lisätään pelille uusi objekti "omena", jota madolla kerätään kasvattaaksemme matoa
+    /// lisätään käsite madon palasille
     /// </summary>
     List<GameObject> matopalat1 = new List<GameObject>();
     List<GameObject> matopalat2 = new List<GameObject>();
@@ -50,9 +54,10 @@ public class Matopeli1 : PhysicsGame
 
     public override void Begin()
     {
-        AsetaOhjaimet();
         LuoKentta();
+        LisaaLaskurit();
         PelinAlku();
+        AsetaOhjaimet();
     }
 
 
@@ -106,18 +111,43 @@ public class Matopeli1 : PhysicsGame
     {
 
         /// Pelaajan 1 ohjaimet
-        Keyboard.Listen(Key.Right, ButtonState.Pressed, MuutaSuunta, null, Direction.Right);
-        Keyboard.Listen(Key.Left, ButtonState.Pressed, MuutaSuunta, null, Direction.Left);
-        Keyboard.Listen(Key.Up, ButtonState.Pressed, MuutaSuunta, null, Direction.Up);
-        Keyboard.Listen(Key.Down, ButtonState.Pressed, MuutaSuunta, null, Direction.Down);
+        Keyboard.Listen(Key.Right, ButtonState.Pressed, MuutaSuunta, null, Direction.Right, '1');
+        Keyboard.Listen(Key.Left, ButtonState.Pressed, MuutaSuunta, null, Direction.Left, '1');
+        Keyboard.Listen(Key.Up, ButtonState.Pressed, MuutaSuunta, null, Direction.Up, '1');
+        Keyboard.Listen(Key.Down, ButtonState.Pressed, MuutaSuunta, null, Direction.Down, '1');
         Keyboard.Listen(Key.Escape, ButtonState.Pressed, ConfirmExit, "Lopeta peli");
 
         /// Pelaajan 2 ohjaimet
-        Keyboard.Listen(Key.D, ButtonState.Pressed, MuutaSuunta2, null, Direction.Right);
-        Keyboard.Listen(Key.A, ButtonState.Pressed, MuutaSuunta2, null, Direction.Left);
-        Keyboard.Listen(Key.W, ButtonState.Pressed, MuutaSuunta2, null, Direction.Up);
-        Keyboard.Listen(Key.S, ButtonState.Pressed, MuutaSuunta2, null, Direction.Down);
+        Keyboard.Listen(Key.D, ButtonState.Pressed, MuutaSuunta, null, Direction.Right, '0');
+        Keyboard.Listen(Key.A, ButtonState.Pressed, MuutaSuunta, null, Direction.Left, '0');
+        Keyboard.Listen(Key.W, ButtonState.Pressed, MuutaSuunta, null, Direction.Up, '0');
+        Keyboard.Listen(Key.S, ButtonState.Pressed, MuutaSuunta, null, Direction.Down, '0');
         Keyboard.Listen(Key.Escape, ButtonState.Pressed, ConfirmExit, "Lopeta peli");
+    }
+
+
+    /// <summary>
+    /// Käsitellään matojen suunnanmuutokset 
+    /// </summary>
+    private void MuutaSuunta(Direction uusiSuunta, char suunta)
+    {
+        TarkistaSuunta(uusiSuunta, Direction.Right, Direction.Left, suunta);
+
+        TarkistaSuunta(uusiSuunta, Direction.Left, Direction.Right, suunta);
+
+        TarkistaSuunta(uusiSuunta, Direction.Up, Direction.Down, suunta);
+
+        TarkistaSuunta(uusiSuunta, Direction.Down, Direction.Up, suunta);
+    }
+
+
+    void TarkistaSuunta(Direction uusiSuunta, Direction x, Direction y, char suunta)
+    {
+        if (suunta == '1')
+        {
+            if (suunta1 == x && uusiSuunta != y) tulevaSuunta1 = uusiSuunta;
+        }
+        else if (suunta2 == x && uusiSuunta != y) tulevaSuunta2 = uusiSuunta;
     }
 
 
@@ -143,44 +173,7 @@ public class Matopeli1 : PhysicsGame
         paivitysAjastin.Timeout += PaivitaMatoa;
         paivitysAjastin.Start();
 
-        AsetaOhjaimet();
-        LisaaLaskurit();
-    }
 
-
-    /// <summary>
-    /// Käsitellään matojen suunnanmuutokset TODO: uusiSuunta yhteen aliohjelmaan (parametrin lisäys)
-    /// </summary>
-    /// <param name="uusiSuunta"></param>
-    void MuutaSuunta(Direction uusiSuunta)
-    {
-        if (suunta1 == Direction.Right && uusiSuunta != Direction.Left)
-            tulevaSuunta1 = uusiSuunta;
-
-        if (suunta1 == Direction.Up && uusiSuunta != Direction.Down)
-            tulevaSuunta1 = uusiSuunta;
-
-        if (suunta1 == Direction.Left && uusiSuunta != Direction.Right)
-            tulevaSuunta1 = uusiSuunta;
-
-        if (suunta1 == Direction.Down && uusiSuunta != Direction.Up)
-            tulevaSuunta1 = uusiSuunta;
-    }
-
-
-    void MuutaSuunta2(Direction uusiSuunta2)
-    {
-        if (suunta2 == Direction.Right && uusiSuunta2 != Direction.Left)
-            tulevaSuunta2 = uusiSuunta2;
-
-        if (suunta2 == Direction.Up && uusiSuunta2 != Direction.Down)
-            tulevaSuunta2 = uusiSuunta2;
-
-        if (suunta2 == Direction.Left && uusiSuunta2 != Direction.Right)
-            tulevaSuunta2 = uusiSuunta2;
-
-        if (suunta2 == Direction.Down && uusiSuunta2 != Direction.Up)
-            tulevaSuunta2 = uusiSuunta2;
     }
 
 
@@ -305,7 +298,7 @@ public class Matopeli1 : PhysicsGame
         }
 
 
-        /// törmäsikö pää omenaan
+        /// törmäsikö pää omenaan TODO: toistoa
         if (omena.IsInside(paa1.Position))
         {
             /// Siirretään omena satunnaiseen paikkaan.
