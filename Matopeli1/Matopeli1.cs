@@ -334,7 +334,11 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    /// <summary>
     /// Käsitellään uuden palan lisäys madon jatkeeksi (toisto)
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     void LuoMatopala1(double x, double y)
     {
         GameObject pala = new GameObject(Ruudut, Ruudut);
