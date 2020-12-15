@@ -1,4 +1,5 @@
 Kahden Pelaajan Matopeli
+
 Authors Juuso Jokinen & Oskari Neuvonen
 
 Projektin tavoitteena oli rakentaa jossain määrin kilpailuhenkinen 2 hengen matopeli, joka toimii lokaalisti yhdellä näppäimistöllä kahdelle 
