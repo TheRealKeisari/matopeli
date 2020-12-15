@@ -63,20 +63,27 @@ public class Matopeli1 : PhysicsGame
     {
         suunta1 = Direction.Up; 
         tulevaSuunta1 = Direction.Up;
+
         suunta2 = Direction.Down;
         tulevaSuunta2 = Direction.Down;
+
         pelaajan1Pisteet.Value = 0;
         pelaajan2Pisteet.Value = 0;
+
+
         foreach (GameObject madonPala in matopalat1)
         {
             Remove(madonPala);
         }
         matopalat1.Clear();
+
+
         foreach (GameObject madonPala in matopalat2)
         {
             Remove(madonPala);
         }
         matopalat2.Clear();
+
 
         /// Luodaan mato-kavereita
         LuoMatopala1(6 * Ruudut, 3 * Ruudut);
