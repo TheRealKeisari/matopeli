@@ -30,18 +30,8 @@ public class Matopeli1 : PhysicsGame
     List<GameObject> matopalat1 = new List<GameObject>();
     List<GameObject> matopalat2 = new List<GameObject>();
 
+    // Annetaan pelille uudet käsitteet "laskurit" ja nimetään ne 
 
-    // lisätään "mato" objekti
-
-    private PhysicsObject mato1;
-    private PhysicsObject mato2;
-
-    // lisätään kentän reunat
-
-    private PhysicsObject vasenReuna;
-    private PhysicsObject oikeaReuna;
-    private PhysicsObject alaReuna;
-    private PhysicsObject ylaReuna;
     private IntMeter pelaajan1Pisteet;
     private IntMeter pelaajan2Pisteet;
 
@@ -53,6 +43,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Käsitellään pelin aloitustilanne
     private void PelinAlku()
     {
         suunta1 = Direction.Up; 
@@ -86,6 +77,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Asetetaan ohjaimet pelaajille
     private void AsetaOhjaimet()
     {
 
@@ -105,6 +97,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Luodaan pelikenttä
     private void LuoKentta()
     {
         Level.Width = Ruudut * Leveys;
@@ -129,6 +122,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Käsitellään matojen suunnanmuutokset
      void MuutaSuunta(Direction uusiSuunta)
     {
         if (suunta1 == Direction.Right && uusiSuunta != Direction.Left)
@@ -143,6 +137,7 @@ public class Matopeli1 : PhysicsGame
         if (suunta1 == Direction.Down && uusiSuunta != Direction.Up)
             tulevaSuunta1 = uusiSuunta;
     }
+
 
     void MuutaSuunta2(Direction uusiSuunta2)
     {
@@ -160,6 +155,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Lisätään luomamme laskurit peliin
     private void LisaaLaskurit()
     {
         pelaajan1Pisteet = LuoLaskuri(Screen.Left + 100.0, Screen.Top - 100.0);
@@ -167,6 +163,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Luodaan pistelaskurit, jolloin tiedämme kumpi mato on kerännyt useamman omenan
     private IntMeter LuoLaskuri(double x, double y)
     {
         IntMeter laskuri = new IntMeter(0);
@@ -184,10 +181,12 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Käsitellään pisteiden lisäys laskureihin
     private void PisteenLisays1()
     {
         pelaajan1Pisteet.Value += 1;
     }
+
 
     private void PisteenLisays2()
     {
@@ -195,6 +194,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
+    // Tämän aliohjelman sisällä käsittelemme sitä, kuinka mato käyttäytyy pelissä
     void PaivitaMatoa()
     {
         suunta1 = tulevaSuunta1;
@@ -215,6 +215,7 @@ public class Matopeli1 : PhysicsGame
         matopalat2.RemoveAt(0); // Poistetaan listan ensimmäinen alkio
         matopalat2.Add(paa2); // Alkio listan loppuun
 
+
         // Peli päättyy jos osutaan omiin paloihin
         for (int i = 0; i < matopalat1.Count - 1; i++)
         {
@@ -230,6 +231,7 @@ public class Matopeli1 : PhysicsGame
             }
         }
 
+        
         // Peli päättyy jos osutaan omiin paloihin
         for (int i = 0; i < matopalat2.Count - 1; i++)
         {
@@ -244,6 +246,7 @@ public class Matopeli1 : PhysicsGame
                 return; // PaivitaMatoa aliohjelma päättyy
             }
         }
+
 
         // Jos menee ulos kartasta, niin peli päättyy
         if (!Level.BoundingRect.IsInside(paa1.Position))
@@ -286,14 +289,16 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-        void LuoMatopala1(double x, double y)
-        {
-            GameObject pala = new GameObject(Ruudut, Ruudut);
-            pala.X = x;
-            pala.Y = y;
-            matopalat1.Insert(0, pala); // Lisää palan matopalat listan alkuun.
-            Add(pala); // Lisää pala pelikentälle.
-        }
+    // Käsitellään uuden palan lisäys madon jatkeeksi
+    void LuoMatopala1(double x, double y)
+    {
+        GameObject pala = new GameObject(Ruudut, Ruudut);
+        pala.X = x;
+        pala.Y = y;
+        matopalat1.Insert(0, pala); // Lisää palan matopalat listan alkuun.
+        Add(pala); // Lisää pala pelikentälle.
+    }
+
 
     void LuoMatopala2(double x, double y)
     {
