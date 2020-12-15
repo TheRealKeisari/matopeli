@@ -6,10 +6,11 @@ using Jypeli.Controls;
 using Jypeli.Widgets;
 
 public class Matopeli1 : PhysicsGame
+
 {
     // Suunnitelmana olisi kirjoittaa matopeli, jossa teemme kaksi matoa joita ohjataan yhdellä näppäimistöllä käyttäen nuolinäppäimiä sekä WASD:ia
     // Aloitetaan tekemällä pelikartalle rajat ja jakamalla se neliöihin
-    // "const int" käsitteiden tarkoituksena määrittää pelikartta, kartan koko sekä madon pituus ja aloituspaikka pelin alussa
+    // "const int" käsitteiden tarkoituksena määrittää pelikartta, kartan koko sekä madon pituus ja aloituspaikka pelin alussa. Author ja pelin luokka
 
     private const int Ruudut = 20;
     private const int Leveys = 31;
