@@ -14,8 +14,7 @@ public class Matopeli1 : PhysicsGame
     private const int Ruudut = 20;
     private const int Leveys = 31;
     private const int Korkeus = 31;
-    private const int MadonPituus = 3;
-    private const int r = 7;
+
 
     // Määritetään aloitukseen suunta
     Direction suunta1;
