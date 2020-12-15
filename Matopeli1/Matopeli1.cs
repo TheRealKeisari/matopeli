@@ -17,12 +17,12 @@ public class Matopeli1 : PhysicsGame
 
 
     // Määritetään aloitukseen suunta
-    Direction suunta1;
-    Direction suunta2;
-    Direction tulevaSuunta1;
-    Direction tulevaSuunta2;
+    private Direction suunta1;
+    private Direction suunta2;
+    private Direction tulevaSuunta1;
+    private Direction tulevaSuunta2;
 
-    GameObject omena;
+    private GameObject omena;
 
     // Lisätään pelille uusi objekti "omena", jota madolla kerätään kasvattaaksemme matoa 
 
@@ -121,7 +121,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään matojen suunnanmuutokset
+    // Käsitellään matojen suunnanmuutokset - uusiSuunta yhteen aliohjelmaan (parametrin lisäys)
      void MuutaSuunta(Direction uusiSuunta)
     {
         if (suunta1 == Direction.Right && uusiSuunta != Direction.Left)
@@ -180,7 +180,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään pisteiden lisäys laskureihin
+    // Käsitellään pisteiden lisäys laskureihin (pisteenlisäys yhteen aliohjelmaan)
     private void PisteenLisays1()
     {
         pelaajan1Pisteet.Value += 1;
@@ -215,7 +215,7 @@ public class Matopeli1 : PhysicsGame
         matopalat2.Add(paa2); // Alkio listan loppuun
 
 
-        // Peli päättyy jos osutaan omiin paloihin
+        // Peli päättyy jos osutaan omiin paloihin (toistoa)
         for (int i = 0; i < matopalat1.Count - 1; i++)
         {
             if (matopalat1[i].IsInside(paa1.Position))
@@ -247,7 +247,7 @@ public class Matopeli1 : PhysicsGame
         }
 
 
-        // Jos menee ulos kartasta, niin peli päättyy
+        // Jos menee ulos kartasta, niin peli päättyy (toistoa)
         if (!Level.BoundingRect.IsInside(paa1.Position))
         {
             PelinAlku();
@@ -272,6 +272,7 @@ public class Matopeli1 : PhysicsGame
             PisteenLisays1();
             LuoMatopala1(matopalat1[0].Position.X, matopalat1[1].Position.Y);
         }
+
         if (omena.IsInside(paa2.Position))
         {
             // Siirretään omena satunnaiseen paikkaan.
@@ -288,7 +289,7 @@ public class Matopeli1 : PhysicsGame
     }
 
 
-    // Käsitellään uuden palan lisäys madon jatkeeksi
+    // Käsitellään uuden palan lisäys madon jatkeeksi (toisto)
     void LuoMatopala1(double x, double y)
     {
         GameObject pala = new GameObject(Ruudut, Ruudut);
