@@ -91,16 +91,16 @@ public class Matopeli1 : PhysicsGame
 
 
         /// Luodaan mato-kavereita
-        LuoMatopala1(6 * Ruudut, 3 * Ruudut);
-        LuoMatopala1(5 * Ruudut, 3 * Ruudut);
-        LuoMatopala1(4 * Ruudut, 3 * Ruudut);
-        LuoMatopala1(3 * Ruudut, 3 * Ruudut);
+        LuoMatopala(matopalat1, 6 * Ruudut, 3 * Ruudut);
+        LuoMatopala(matopalat1, 5 * Ruudut, 3 * Ruudut);
+        LuoMatopala(matopalat1, 4 * Ruudut, 3 * Ruudut);
+        LuoMatopala(matopalat1, 3 * Ruudut, 3 * Ruudut);
 
         
-        LuoMatopala2(6 * Ruudut, 1 * Ruudut);
-        LuoMatopala2(5 * Ruudut, 1 * Ruudut);
-        LuoMatopala2(4 * Ruudut, 1 * Ruudut);
-        LuoMatopala2(3 * Ruudut, 1 * Ruudut);
+        LuoMatopala(matopalat2, 6 * Ruudut, 1 * Ruudut);
+        LuoMatopala(matopalat2, 5 * Ruudut, 1 * Ruudut);
+        LuoMatopala(matopalat2, 4 * Ruudut, 1 * Ruudut);
+        LuoMatopala(matopalat2, 3 * Ruudut, 1 * Ruudut);
     }
 
 
@@ -236,108 +236,67 @@ public class Matopeli1 : PhysicsGame
         matopalat2.Add(paa2); /// Alkio listan loppuun
 
 
-        /// Peli päättyy jos osutaan omiin paloihin (toistoa)
+        /// Jos menee ulos kartasta, niin peli päättyy
+        if (!Level.BoundingRect.IsInside(paa1.Position) || (!Level.BoundingRect.IsInside(paa2.Position)) || (collision(matopalat1, matopalat2)))
+        {
+            PelinAlku();
+            return;
+        }
+        SyotiinkoOmena(matopalat1, paa1, pelaajan1Pisteet);
+        SyotiinkoOmena(matopalat2, paa2, pelaajan2Pisteet);
+    }
+
+    private void SyotiinkoOmena(List<GameObject> matopalat, GameObject paa, IntMeter laskuri)
+    {
+        if (omena.IsInside(paa.Position))
+        {
+            /// Siirretään omena satunnaiseen paikkaan.
+            double satunnainenX = RandomGen.NextInt(-Leveys / 2, Leveys / 2);
+            double satunnainenY = RandomGen.NextInt(-Korkeus / 2, Korkeus / 2);
+            omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
+
+            /// Luodaan uusi madon pala.
+            laskuri.Value += 1;
+            LuoMatopala(matopalat, matopalat[0].Position.X, matopalat[1].Position.Y);
+        }
+    }
+
+    /// <summary>
+    /// Peli päättyy jos osutaan omiin paloihin (mato 1 ensimmäinen silmukka, mato2 toisessa)
+    /// </summary>
+    private bool collision(List<GameObject> matopalat1, List<GameObject> matopalat2)
+    {
         for (int i = 0; i < matopalat1.Count - 1; i++)
         {
-            if (matopalat1[i].IsInside(paa1.Position))
+            if (matopalat1[i].IsInside(matopalat1[matopalat1.Count - 1].Position) || (matopalat1[i].IsInside(matopalat2[matopalat2.Count - 1].Position)))
             {
-                PelinAlku(); /// Restart
-                return; /// PaivitaMatoa aliohjelma päättyy
-            }
-
-            if (matopalat1[i].IsInside(paa2.Position))
-            {
-                PelinAlku(); /// Restart
-                return; /// PaivitaMatoa aliohjelma päättyy
+                return true; /// PaivitaMatoa aliohjelma päättyy
             }
         }
 
 
-        /// Peli päättyy jos osutaan omiin paloihin
         for (int i = 0; i < matopalat2.Count - 1; i++)
         {
-            if (matopalat2[i].IsInside(paa2.Position))
+            if (matopalat2[i].IsInside(matopalat2[matopalat2.Count - 1].Position) || (matopalat2[i].IsInside(matopalat1[matopalat1.Count - 1].Position)))
             {
-                PelinAlku(); /// Restart
-                return; /// PaivitaMatoa aliohjelma päättyy
-            }
-
-            if (matopalat2[i].IsInside(paa1.Position))
-            {
-                PelinAlku(); /// Restart
-                return; /// PaivitaMatoa aliohjelma päättyy
+                return true; /// PaivitaMatoa aliohjelma päättyy
             }
         }
-
-
-        /// Jos menee ulos kartasta, niin peli päättyy (toistoa)
-        if (!Level.BoundingRect.IsInside(paa1.Position))
-        {
-            PelinAlku();
-            return;
-        }
-
-        if (!Level.BoundingRect.IsInside(paa2.Position))
-        {
-            PelinAlku();
-            return;
-        }
-
-
-        /// törmäsikö pää omenaan TODO: toistoa
-        if (omena.IsInside(paa1.Position))
-        {
-            /// Siirretään omena satunnaiseen paikkaan.
-            double satunnainenX = RandomGen.NextInt(-Leveys / 2, Leveys / 2);
-            double satunnainenY = RandomGen.NextInt(-Korkeus / 2, Korkeus / 2);
-            omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
-
-            /// Luodaan uusi madon pala.
-            pelaajan1Pisteet.Value += 1;
-            LuoMatopala1(matopalat1[0].Position.X, matopalat1[1].Position.Y);
-        }
-
-        if (omena.IsInside(paa2.Position))
-        {
-            /// Siirretään omena satunnaiseen paikkaan.
-            double satunnainenX = RandomGen.NextInt(-Leveys / 2, Leveys / 2);
-            double satunnainenY = RandomGen.NextInt(-Korkeus / 2, Korkeus / 2);
-            omena.Position = new Vector(satunnainenX, satunnainenY) * Ruudut;
-
-            /// Luodaan uusi madon pala.
-            pelaajan2Pisteet.Value += 1;
-            LuoMatopala2(matopalat2[0].Position.X, matopalat2[1].Position.Y);
-
-        }
-
+        return false;
     }
 
 
     /// <summary>
-    /// Käsitellään uuden palan lisäys madon jatkeeksi (toisto)
+    /// Käsitellään uuden palan lisäys madon jatkeeksi
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    void LuoMatopala1(double x, double y)
+    void LuoMatopala(List<GameObject> matopala, double x, double y)
     {
         GameObject pala = new GameObject(Ruudut, Ruudut);
         pala.X = x;
         pala.Y = y;
-        matopalat1.Insert(0, pala); /// Lisää palan matopalat listan alkuun.
+        matopala.Insert(0, pala); /// Lisää palan matopalat listan alkuun.
         Add(pala); /// Lisää pala pelikentälle.
     }
-
-
-    void LuoMatopala2(double x, double y)
-    {
-        GameObject pala = new GameObject(Ruudut, Ruudut);
-        pala.X = x;
-        pala.Y = y;
-        matopalat2.Insert(0, pala); /// Lisää palan matopalat listan alkuun.
-        Add(pala); /// Lisää pala pelikentälle.
-    }
-
-
-
-
 }
